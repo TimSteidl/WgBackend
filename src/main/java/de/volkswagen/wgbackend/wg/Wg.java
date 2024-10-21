@@ -6,10 +6,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import de.volkswagen.wgbackend.item.Item;
 import de.volkswagen.wgbackend.profile.Profile;
 import de.volkswagen.wgbackend.task.Task;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,7 +25,7 @@ public class Wg {
 	@GeneratedValue
 	private int id;
 
-	@OneToMany(mappedBy = "wg")
+	@OneToMany(mappedBy = "wg", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, scope = Wg.class)
 	private List<Profile> profiles;
 
@@ -41,6 +38,8 @@ public class Wg {
 	private List<Task> tasks;
 
 	private String wgPassword;
+
+	private boolean wgPasswordIsOTP;
 
 	public Wg() {
 	}

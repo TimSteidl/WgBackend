@@ -3,6 +3,7 @@ package de.volkswagen.wgbackend.profile;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import de.volkswagen.wgbackend.exception.NoWgAssignedException;
 import de.volkswagen.wgbackend.task.Task;
 import de.volkswagen.wgbackend.wg.Wg;
 import jakarta.persistence.*;
@@ -26,11 +27,11 @@ public class Profile {
 	private int id;
 
 	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, scope = Profile.class)
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = false, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	@JoinColumn(name = "wg_id")
 	private Wg wg;
 
-	@OneToMany(mappedBy = "profile")
+	@OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
 	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, scope = Profile.class)
 	private List<Task> tasks;
 
@@ -60,5 +61,11 @@ public class Profile {
 		this.picture = picture;
 		this.givenName = givenName;
 		this.familyName = familyName;
+	}
+
+	public void checkIfWgIsAssigned() {
+		if (this.wg == null) {
+			throw new NoWgAssignedException("No Wg assigned");
+		}
 	}
 }

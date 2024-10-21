@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/Wg")
 public class WgController {
@@ -17,7 +19,7 @@ public class WgController {
 	}
 
 	@GetMapping("/{id}")
-	public Wg getWgById(@PathVariable String id) {
+	public Optional<Wg> getWgById(@PathVariable long id) {
 		return this.wgService.getWgById(id);
 	}
 }
