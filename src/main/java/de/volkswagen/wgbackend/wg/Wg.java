@@ -50,4 +50,8 @@ public class Wg {
 		this.tasks = tasks;
 		this.wgPassword = wgPassword;
 	}
+
+	public List<Item> getAllActiveItems() {
+		return this.items.stream().filter(item -> !item.isDeleted()).toList();
+	}
 }

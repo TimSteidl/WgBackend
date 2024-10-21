@@ -4,10 +4,7 @@ package de.volkswagen.wgbackend.item;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import de.volkswagen.wgbackend.wg.Wg;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,9 +21,15 @@ public class Item {
 	@GeneratedValue
 	private int id;
 
-	@ManyToOne
+	@ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, scope = Item.class)
 	private Wg wg;
 
 	private String name;
+
+	private int position;
+
+	private boolean isBought;
+	private boolean isFavorite;
+	private boolean isDeleted;
 }
